@@ -19,6 +19,7 @@ async def run(ctx, sub, searchTerms):
             searchTerms = ctx.message.content.upper().strip().split(" ")[2:]
         except:
             await ctx.send("INVALID COMMAND")
+            return
 
     else:
         #Slash command
@@ -33,4 +34,4 @@ async def run(ctx, sub, searchTerms):
         if valid:
             asyncio.create_task(searchFW.run(ctx, sub, searchTerms))
         else:
-            ctx.send("INVALID SUB")
+            await ctx.send("INVALID SUB")
