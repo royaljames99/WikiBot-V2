@@ -41,13 +41,17 @@ async def run(ctx):
         count += 1
 
         #get subscriber name
-        name = await ctx.bot.fetch_user(sub["SUBSCRIBER_ID"]).name
+        name = await ctx.bot.fetch_user(sub["SUBSCRIBER_ID"])
+        name = name.name
         wikiSub = sub["SUB"]
-        time = await asyncio.create_task(timestamp.getStampFromAddon(sub["TIME"]))
+        time = await asyncio.create_task(timestamp.getDisplayTime(sub["TIME"]))
 
         #format
         text += f"{str(count)}.\n    SUB: {wikiSub}\n    TIME: {time}\n    SUBSCRIBER: {name}\n"
 
     #send
-    embed = discord.Embed(title = "WIKI SUBS FOR THIS CHANNEL:", description = text)
-    await ctx.send(embed = embed)
+    if text != "":
+        embed = discord.Embed(title = "WIKI SUBS FOR THIS CHANNEL:", description = text)
+        await ctx.send(embed = embed)
+    else:
+        await ctx.send("There are no subscriptions for this channel")

@@ -26,11 +26,11 @@ async def run(ctx, sub):
     
     if sub.upper() == "WIKI":
         import InternalCommands.genW as genW
-        asyncio.create_task(genW.run(ctx))
+        asyncio.create_task(genW.run(ctx.channel))
     else:
         from InternalCommands import checkSub, genFW
         valid = await asyncio.create_task(checkSub.run(sub))
         if valid:
-            asyncio.create_task(genFW.run(ctx, sub))
+            asyncio.create_task(genFW.run(ctx.channel, sub))
         else:
             ctx.send("INVALID SUB")

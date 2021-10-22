@@ -5,8 +5,8 @@ import discord
 
 session = requests.session()
 
-async def run(ctx):
-    msg = await ctx.send(embed = discord.Embed(title = "Working.....", description = "."))
+async def run(channel):
+    msg = await channel.send(embed = discord.Embed(title = "Working.....", description = "."))
     req = session.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
 
     data = req.json()

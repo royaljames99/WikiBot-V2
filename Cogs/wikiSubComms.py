@@ -1,18 +1,30 @@
-from os import name
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord_slash import SlashCommand, SlashContext, cog_ext
 from discord_slash.utils.manage_commands import create_option
+
+import Commands.subwiki as subwiki
+import Commands.unsubwiki as unsubwiki
+import Commands.showsubs as showsubs
+import InternalCommands.wikiLoop as wikiLoop
+
 import asyncio
 
 class wikiSubComms(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.wikiLoop.start()
+
+
+    ##WIKILOOP##
+    @tasks.loop(minutes = 1)
+    async def wikiLoop(self):
+        asyncio.create_task(wikiLoop.run(self.bot))
     
+
     ##SUBSCRIBE##
     @commands.command()
     async def subwiki(self, ctx):
-        import Commands.subwiki as subwiki
         asyncio.create_task(subwiki.run(ctx, None, None))
     @cog_ext.cog_slash(
         name = "subwiki",
@@ -32,14 +44,13 @@ class wikiSubComms(commands.Cog):
             )
         ])
     async def _subWiki(self, ctx, sub, time):
-        import Commands.subwiki as subwiki
         asyncio.create_task(subwiki.run(ctx, sub, time))
 
 
     ##UNSUBSCRIBE##
     @commands.command()
     async def unsubwiki(self, ctx):
-        pass
+        asyncio.create_task(unsubwiki.run(ctx, None))
     @cog_ext.cog_slash(
         name = "unsubwiki",
         description = "Remove a daily wiki subscription",
@@ -52,15 +63,13 @@ class wikiSubComms(commands.Cog):
             )
         ])
     async def _unSubWiki(self, ctx, index):
-        pass
+        asyncio.create_task(unsubwiki.run(ctx, index))
 
 
     ##SHOWSUBS##
     @commands.command()
     async def showsubs(self, ctx):
-        import Commands.showsubs as showsubs
         asyncio.create_task(showsubs.run(ctx))
     @cog_ext.cog_slash(name = "showsubs", description = "Show all wiki subscriptions for this channel")
     async def _showsubs(self, ctx):
-        import Commands.showsubs as showsubs
         asyncio.create_task(showsubs.run(ctx))

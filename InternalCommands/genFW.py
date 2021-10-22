@@ -4,8 +4,8 @@ import discord
 
 session = requests.session()
 
-async def run(ctx, sub):
-    msg = await ctx.send(embed = discord.Embed(title = "Working.....", description = "."))
+async def run(channel, sub):
+    msg = await channel.send(embed = discord.Embed(title = "Working.....", description = "."))
     print("Running")
     req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
     print("Gotten req")

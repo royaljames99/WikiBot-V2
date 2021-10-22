@@ -2,28 +2,34 @@ import time
 import math
 import asyncio
 
-async def getTimeAddon(time):
-    hour = int(time[0:1])
-    minute = int(time[3:4])
+async def getTimeAddonFromString(time):
+    hour = int(time[0:2])
+    minute = int(time[3:5])
 
     stamp = (hour * 3600) + (minute * 60)
      
     return stamp
 
-async def getStampFromTime(timestr):
-    #gets upper and lower bounds of time for a minute from a hh:mm time
-    now = time.time()
-    midnight = math.floor(now / 86400) * 86400
-    lower = midnight + await asyncio.create_task(getTimeAddon(timestr))
-    upper = lower + 60
-    
-    return upper, lower
 
-async def getStampBoundsFromAddon(addon):
-    #gets upper and lower bounds of time for a minute from addon stamp
+async def getTimeAddonNow():
     now = time.time()
-    midnight = math.floor(now / 86400) * 86400
-    lower = midnight + addon
-    upper = lower + 60
-    
-    return upper, lower
+
+    todayTime = now % 86400
+    hour = math.floor(todayTime / 3600) + 1
+    minute = math.floor((todayTime % 3600) / 60)
+
+    stamp = (hour * 3600) + (minute * 60)
+    return stamp
+
+
+async def getDisplayTime(addon): #47280
+    hour = str(math.floor(addon / 3600))
+    minute = str(math.floor((addon % 3600) / 60))
+
+    if len(hour) == 1:
+        hour = "0" + hour
+    if len(minute) == 1:
+        minute = "0" + minute
+
+    assembled = hour + ":" + minute
+    return assembled
