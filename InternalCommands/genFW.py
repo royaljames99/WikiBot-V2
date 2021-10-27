@@ -31,7 +31,7 @@ async def run(channel, sub):
     text += f"\nFor more information: [{pageName}]({url})"
 
     embed = discord.Embed(title = f"RANDOM PAGE FROM WIKIPEDIA: {pageName}", description = text)
-    msg = await msg.edit(embed = embed)
+    await msg.edit(embed = embed)
 
     #get image
     imageUrl = None
