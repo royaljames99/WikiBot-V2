@@ -5,8 +5,7 @@ import discord
 
 session = requests.session()
 
-async def run(channel):
-    msg = await channel.send(embed = discord.Embed(title = "Working.....", description = "."))
+async def run(msg):
     req = session.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
 
     data = req.json()
@@ -37,7 +36,7 @@ async def run(channel):
     try:
         imageUrl = page["pageimage"]
     except Exception as e:
-        print("Error -1", e)
+        pass #no image
     else:
         try:
             imReq = session.get(f"https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&iiprop=extmetadata&titles=File:{imageUrl}&format=json")
@@ -65,6 +64,5 @@ async def run(channel):
                 text += f"\n[Hover for image license information](https://www.youtube.com/watch?v=dQw4w9WgXcQ 'license: {acceptedlicense}\nauthor: {author}\ndate: {date}\nlicenseUrl: {licenseUrl}')"
                 embed = discord.Embed(title = f"RANDOM PAGE FROM WIKIPEDIA: {pageName}", description = text)
                 url = "https://commons.wikimedia.org/wiki/Special:FilePath/" + imageUrl
-                print(url)
                 embed.set_thumbnail(url = url)
                 await msg.edit(embed = embed)

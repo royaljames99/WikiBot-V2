@@ -1,5 +1,6 @@
 import asyncio
 import time
+import discord
 
 async def run(ctx, sub):
 
@@ -22,15 +23,16 @@ async def run(ctx, sub):
     else:
         #Slash command
         sub = sub.replace(" ", "_")
-        print(sub)
+
+    msg = await ctx.send(embed = discord.Embed(title = "Working.....", description = "."))
     
     if sub.upper() == "WIKI":
         import InternalCommands.genW as genW
-        asyncio.create_task(genW.run(ctx.channel))
+        asyncio.create_task(genW.run(msg))
     else:
         from InternalCommands import checkSub, genFW
         valid = await asyncio.create_task(checkSub.run(sub))
         if valid:
-            asyncio.create_task(genFW.run(ctx.channel, sub))
+            asyncio.create_task(genFW.run(msg, sub))
         else:
             ctx.send("INVALID SUB")
