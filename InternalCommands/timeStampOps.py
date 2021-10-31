@@ -22,7 +22,7 @@ async def getTimeAddonNow():
     return stamp
 
 
-async def getDisplayTime(addon): #47280
+async def getDisplayTime(addon):
     hour = str(math.floor(addon / 3600))
     minute = str(math.floor((addon % 3600) / 60))
 

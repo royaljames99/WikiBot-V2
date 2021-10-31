@@ -27,7 +27,7 @@ async def run(ctx, index):
         for i in channelSubs[key]:
             count += 1
             if count == index:
-                del channelSubs[key][count - 1]
+                del channelSubs[key][channelSubs[key].index(i)]
                 deleted = True
                 if len(channelSubs[key]) == 0:
                     channelSubs.pop(key, None)

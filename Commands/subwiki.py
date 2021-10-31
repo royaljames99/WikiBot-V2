@@ -19,7 +19,7 @@ async def run(ctx, sub, time):
         pass
 
     try:
-        if int(time[3:5]) > 59 or int(time[3:5]) < 0 or int(time[0:2]) > 23 or int(time[0:2]) < 0:
+        if int(time[3:5]) > 59 or int(time[3:5]) < 0 or int(time[0:2]) > 24 or int(time[0:2]) < 0:
             await ctx.send("INVALID TIME")
             return
     except:
@@ -37,6 +37,10 @@ async def run(ctx, sub, time):
     #assemble sub
     timeStamp = await asyncio.create_task(timestamp.getTimeAddonFromString(time))
     subToAdd = {"SUB": sub, "TIME": timeStamp, "SUBSCRIBER_ID": ctx.author.id}
+
+    #fix johnathan being a c*** to stop inefficiences in storage
+    if hour == "24":
+        hour = "00"
 
     #load sub data
     with open("./Data/wikiSubs.json", "r") as file:
