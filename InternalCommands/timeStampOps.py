@@ -15,7 +15,7 @@ async def getTimeAddonNow():
     now = time.time()
 
     todayTime = now % 86400
-    hour = (math.floor(todayTime / 3600) + 1) % 24
+    hour = (math.floor(todayTime / 3600)) % 24
     minute = math.floor((todayTime % 3600) / 60)
 
     stamp = (hour * 3600) + (minute * 60)
