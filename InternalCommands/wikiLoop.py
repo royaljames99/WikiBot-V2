@@ -7,13 +7,13 @@ async def run(bot):
     with open("./Data/wikiSubs.json", "r") as file:
         data = json.load(file)
 
-    addon = await asyncio.create_task(timestamp.getTimeAddonNow()) % 86400
+    addon = await asyncio.create_task(timestamp.getTimeAddonNow())
 
     for serverId in data:
         for channelId in data[serverId]["CHANNELS"]:
             for hour in data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"]:
                 for sub in data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"][hour]:
-                    if sub["TIME"] == addon:
+                    if sub["TIME"] % 86400 == addon:
                         #get channel
                         channel =  bot.get_channel(int(channelId))
                         #send sub
