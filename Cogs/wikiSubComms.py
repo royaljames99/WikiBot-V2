@@ -7,6 +7,7 @@ import Commands.subwiki as subwiki
 import Commands.unsubwiki as unsubwiki
 import Commands.showsubs as showsubs
 import InternalCommands.wikiLoop as wikiLoop
+import InternalCommands.routineMaintainence as maintainence
 
 import asyncio
 
@@ -20,6 +21,12 @@ class wikiSubComms(commands.Cog):
     @tasks.loop(minutes = 1)
     async def wikiLoop(self):
         asyncio.create_task(wikiLoop.run(self.bot))
+
+
+    #DAILY MAINTAINENCE
+    @tasks.loop(hours = 24)
+    async def routineMaintainence(self):
+        asyncio.create_task(maintainence.run(self.bot))
     
 
     ##SUBSCRIBE##

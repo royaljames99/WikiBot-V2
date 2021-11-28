@@ -7,7 +7,11 @@ session = requests.session()
 async def run(msg, sub):
     req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
 
-    data = req.json()
+    try:
+        data = req.json()
+    except:
+        embed = discord.Embed(title = f"ERROR IN GENERATING PAGE FROM {sub}", description = "This may be due to the sub being invalid, please verify")
+        msg.edit(embed = embed)
 
     pageId = data["query"]["pages"].keys()
     for key in pageId:
