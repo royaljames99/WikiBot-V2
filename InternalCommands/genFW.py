@@ -5,7 +5,7 @@ import discord
 session = requests.session()
 
 async def run(msg, sub):
-    req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
+    req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0")
 
     try:
         data = req.json()
@@ -39,12 +39,15 @@ async def run(msg, sub):
     try:
         imageUrl = page["pageimage"]
     except Exception as e:
+        print("no image")
         pass #no image on page
     else:
         try:
             imReq = session.get(f"https://{sub}.fandom.com/api.php?action=query&prop=imageinfo&iiprop=extmetadata&titles=File:{imageUrl}&format=json")
             imData = imReq.json()
-            emd = imData["query"]["pages"]["-1"]["imageinfo"][0]["extmetadata"]
+            for pageId in imData["query"]["pages"].keys():
+                emd = imData["query"]["pages"][pageId]["imageinfo"][0]["extmetadata"]
+                break
 
             license = emd["UsageTerms"]["value"]
             author = emd["DateTime"]["value"]
@@ -54,6 +57,7 @@ async def run(msg, sub):
             print("Error ", e)
         else:
             #check if license is usable
+            print(license, author, date, licenseUrl)
             acceptedlicense = None
             licenses = ["creative commons", "attribution-share alike 3.0", "attribution-share alike 4.0", "attribution 2.0", "public domain"]
             if license.lower() != "pd":
@@ -69,3 +73,5 @@ async def run(msg, sub):
                 url = "https://commons.wikimedia.org/wiki/Special:FilePath/" + imageUrl
                 embed.set_thumbnail(url = url)
                 await msg.edit(embed = embed)
+            else:
+                print("no accepted url")
