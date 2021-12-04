@@ -30,10 +30,10 @@ class basicComms(commands.Cog):
 
     
     ##SEARCH##
-    @commands.command()
+    @commands.command(description = "Search for pages within sub", help = "Search for pages within a sub (use wiki for default wikipedia)\n```wb!search <sub> <searchterms>```")
     async def search(self, ctx):
         import Commands.search as search
-        asyncio.create_task(search.run(ctx, None))
+        asyncio.create_task(search.run(ctx, None, None))
     @cog_ext.cog_slash(
         name = "search",
         description = "Seach wikipedia (including fandom) for search terms",
@@ -50,8 +50,32 @@ class basicComms(commands.Cog):
                 required = True,
                 option_type = 3
             )
-        ]
-    )
+        ])
     async def _search(self, ctx, sub, search_terms):
         import Commands.search as search
         asyncio.create_task(search.run(ctx, sub, search_terms))
+
+    @commands.command(description = "Get summary of a page from its title", help = "Get summary of a page by entering its name (use wiki as sub for default wikipedia)\n```wb!page <sub> <pageName>```")
+    async def page(self, ctx):
+        import Commands.page as page
+        asyncio.create_task(page.run(ctx, None, None))
+    @cog_ext.cog_slash(
+        name = "page",
+        description = "Get summary of wikipedia page from pagename",
+        options = [
+            create_option(
+                name = "sub",
+                description = "Fandom subwiki (found in url, use wiki for default wikipedia)",
+                required = True,
+                option_type = 3
+            ),
+            create_option(
+                name = "pagename",
+                description = "The name of the page to be fetched, leave blank for random page",
+                required = False,
+                option_type = 3
+            )
+        ])
+    async def _page(self, ctx, sub, pagename):
+        import Commands.page as page
+        asyncio.create_task(page.run(ctx, sub, pagename))

@@ -30,7 +30,7 @@ class wikiSubComms(commands.Cog):
     
 
     ##SUBSCRIBE##
-    @commands.command()
+    @commands.command(description = "Adds a daily wiki subscription to this channel", help = "Adds a daily wiki subscription for a sub at a given time (use wiki for default wikipedia)\n```wb!subwiki <sub> <time (hh:mm)>```")
     async def subwiki(self, ctx):
         asyncio.create_task(subwiki.run(ctx, None, None))
     @cog_ext.cog_slash(
@@ -55,7 +55,7 @@ class wikiSubComms(commands.Cog):
 
 
     ##UNSUBSCRIBE##
-    @commands.command()
+    @commands.command(description = "Removes daily wiki subscription from this channel", help = "Removes a daily wiki subscription using index from showsubs command\n```wb!unsubwiki <index>```")
     async def unsubwiki(self, ctx):
         asyncio.create_task(unsubwiki.run(ctx, None))
     @cog_ext.cog_slash(
@@ -74,7 +74,7 @@ class wikiSubComms(commands.Cog):
 
 
     ##SHOWSUBS##
-    @commands.command()
+    @commands.command(description = "Shows list of all wiki subscriptions in this channel", help = "Shows list of all wiki subscription in this channel\n```wb!showsubs```")
     async def showsubs(self, ctx):
         asyncio.create_task(showsubs.run(ctx))
     @cog_ext.cog_slash(name = "showsubs", description = "Show all wiki subscriptions for this channel")

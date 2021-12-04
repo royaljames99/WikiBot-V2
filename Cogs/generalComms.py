@@ -9,7 +9,7 @@ class generalComms(commands.Cog):
         self.bot = bot
 
     ##PING##
-    @commands.command()
+    @commands.command(description = "ping", help = "It pongs\n```wb!ping```")
     async def ping(self, ctx):
         import Commands.ping as ping
         asyncio.create_task(ping.run(ctx))

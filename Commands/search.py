@@ -10,13 +10,12 @@ async def run(ctx, sub, searchTerms):
         return
     """
     
-    print(f"Command: search in sub: {sub} for values: {searchTerms} at {time.time()}")
     if ctx.message != None:
         #Reg command
 
         try:
             sub = ctx.message.content.upper().strip().split(" ")[1]
-            searchTerms = ctx.message.content.upper().strip().split(" ")[2:]
+            searchTerms = " ".join(ctx.message.content.upper().strip().split(" ")[2:])
         except:
             await ctx.send("INVALID COMMAND")
             return
@@ -25,6 +24,8 @@ async def run(ctx, sub, searchTerms):
         #Slash command
         sub = sub.replace(" ", "_")
     
+    print(f"Command: search in sub: {sub} for values: {searchTerms} at {time.time()}")
+
     if sub.upper() == "WIKI":
         import InternalCommands.searchW as searchW
         asyncio.create_task(searchW.run(ctx, searchTerms))
