@@ -18,6 +18,7 @@ async def run(ctx, sub, time):
     else:
         pass
 
+    #verify time
     try:
         if int(time[3:5]) > 59 or int(time[3:5]) < 0 or int(time[0:2]) > 24 or int(time[0:2]) < 0:
             await ctx.send("INVALID TIME")
@@ -27,6 +28,7 @@ async def run(ctx, sub, time):
         return
     hour = time[0:2]
 
+    #verify valid sub
     if sub.upper() != "WIKI":
         valid = await asyncio.create_task(checkSub.run(sub))
         if not valid:

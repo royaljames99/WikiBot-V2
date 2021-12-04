@@ -15,6 +15,7 @@ class wikiSubComms(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.wikiLoop.start()
+        self.routineMaintainence.start()
 
 
     ##WIKILOOP##

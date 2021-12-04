@@ -55,6 +55,8 @@ class basicComms(commands.Cog):
         import Commands.search as search
         asyncio.create_task(search.run(ctx, sub, search_terms))
 
+
+    ##PAGE##
     @commands.command(description = "Get summary of a page from its title", help = "Get summary of a page by entering its name (use wiki as sub for default wikipedia)\n```wb!page <sub> <pageName>```")
     async def page(self, ctx):
         import Commands.page as page
