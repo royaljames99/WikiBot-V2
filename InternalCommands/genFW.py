@@ -35,6 +35,8 @@ async def run(msg, sub, pageName = None):
             pass
 
         text += f"\nFor more information: [{pageName}]({url})"
+        #text += "\nHAPPY CHRISTMAS!" #christmas message
+        #text += "\nHAPPY NEW YEAR" #new year message
 
         embed = discord.Embed(title = f"RANDOM PAGE FROM {sub.upper()}: {pageName}", description = text)
         await msg.edit(embed = embed)
@@ -44,8 +46,7 @@ async def run(msg, sub, pageName = None):
         try:
             imageUrl = page["pageimage"]
         except Exception as e:
-            print("no image")
-            pass #no image on page
+            print(f"Fandom page image error: no image    sub: {sub} pageName: {pageName} url: {url}") #no image on page
         else:
             try:
                 imReq = session.get(f"https://{sub}.fandom.com/api.php?action=query&prop=imageinfo&iiprop=extmetadata&titles=File:{imageUrl}&format=json")
@@ -59,10 +60,9 @@ async def run(msg, sub, pageName = None):
                 date = emd["DateTime"]["value"]
                 licenseUrl = emd["LicenseUrl"]["value"]
             except Exception as e:
-                print("Error ", e)
+                print("Fandom page image error ", e, f"sub: {sub} pageName: {pageName} url: {url} imageUrl: {imageUrl}")
             else:
                 #check if license is usable
-                print(license, author, date, licenseUrl)
                 acceptedlicense = None
                 licenses = ["creative commons", "attribution-share alike 3.0", "attribution-share alike 4.0", "attribution 2.0", "public domain"]
                 if license.lower() != "pd":
@@ -78,8 +78,9 @@ async def run(msg, sub, pageName = None):
                     url = "https://commons.wikimedia.org/wiki/Special:FilePath/" + imageUrl
                     embed.set_thumbnail(url = url)
                     await msg.edit(embed = embed)
+                    print(f"WE GOT A FUCKING FANDOM IMAGE!!!! sub: {sub} pageName: {pageName}, url: {url} imageUrl: {imageUrl}")
                 else:
-                    print("no accepted url")
+                    print("Fandom page image error: no accepted url")
 
     except:
         print(f"WE GOT A FANDOM WIKI ERROR\npageName: {pageName}\nerror: {e}")

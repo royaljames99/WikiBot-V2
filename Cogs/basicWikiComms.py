@@ -78,6 +78,6 @@ class basicComms(commands.Cog):
                 option_type = 3
             )
         ])
-    async def _page(self, ctx, sub, pagename):
+    async def _page(self, ctx, sub, pagename = None):
         import Commands.page as page
         asyncio.create_task(page.run(ctx, sub, pagename))

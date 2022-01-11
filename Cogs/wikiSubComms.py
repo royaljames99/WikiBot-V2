@@ -10,11 +10,12 @@ import InternalCommands.wikiLoop as wikiLoop
 import InternalCommands.routineMaintainence as maintainence
 
 import asyncio
+import time
 
 class wikiSubComms(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.wikiLoop.start()
+        #self.wikiLoop.start()
         self.routineMaintainence.start()
 
 

@@ -14,12 +14,13 @@ slash = SlashCommand(bot, sync_commands=True)
 #load cogs
 bot.add_cog(importlib.import_module("Cogs.basicWikiComms").basicComms(bot))
 bot.add_cog(importlib.import_module("Cogs.generalComms").generalComms(bot))
-bot.add_cog(importlib.import_module("Cogs.wikiSubComms").wikiSubComms(bot))
-
+wikiSubComms = importlib.import_module("Cogs.wikiSubComms").wikiSubComms(bot)
+bot.add_cog(wikiSubComms)
 #on_ready
 @bot.event
 async def on_ready():
     print("woo")
+    wikiSubComms.wikiLoop.start()
 
 #run it motherfuckers
 bot.run(os.getenv("token"))

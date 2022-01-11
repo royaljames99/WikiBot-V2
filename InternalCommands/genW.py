@@ -32,6 +32,8 @@ async def run(msg, pageName = None):
             pass
 
         text += f"\nFor more information: [{pageName}]({url})"
+        #text += "\nHAPPY CHRISTMAS!" #christmas message
+        #text += "\nHAPPY NEW YEAR!" #new year message
 
         embed = discord.Embed(title = f"RANDOM PAGE FROM WIKIPEDIA: {pageName}", description = text)
         await msg.edit(embed = embed)

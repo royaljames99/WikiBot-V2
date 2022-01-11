@@ -22,7 +22,7 @@ async def informOfSubRemoval(bot, sub, serverId, channelId):
 
 
 async def run(bot):
-    print("\nperforming maintainence:")
+    print("\nperforming maintenance:")
 
     with open("./Data/wikiSubs.json", "r") as file:
         data = json.load(file)
@@ -41,7 +41,7 @@ async def run(bot):
                 for subIndex in range(0, len(data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"][hour])):
 
                     sub = data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"][hour][subIndex]
-                    if sub["SUB"] not in subsVerified and sub["SUB"] not in subsDiscredited:
+                    if sub["SUB"].upper() not in subsVerified and sub["SUB"] not in subsDiscredited:
                         valid = await asyncio.create_task(checkSub.run(sub["SUB"]))
                         if valid:
                             subsVerified.append(sub["SUB"])
