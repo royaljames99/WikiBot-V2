@@ -1,3 +1,6 @@
+from logging import exception
+from tkinter import EXCEPTION
+from aiohttp import request
 from discord import message
 import requests
 from bs4 import BeautifulSoup as bs
@@ -5,11 +8,19 @@ import discord
 
 session = requests.session()
 
-async def run(msg, pageName = None):
-    if pageName == None:
-        req = session.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
-    else:
-        req = session.get(f"https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&inprop=url&titles={pageName}&piprop=thumbnail|name&pithumbsize=2000")
+async def run(msg, pageName = None): #requests.exceptions.ConnectionError
+    requestCompleted = False
+    while not requestCompleted:
+        try:
+            if pageName == None:
+                req = session.get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0&piprop=thumbnail|name&pithumbsize=2000")
+            else:
+                req = session.get(f"https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts|pageimages&inprop=url&titles={pageName}&piprop=thumbnail|name&pithumbsize=2000")
+            requestCompleted = True
+        except requests.exceptions.ConnectionError as ce:
+            print(ce)
+        except Exception as e:
+            print(e)
 
     try:
 
@@ -51,7 +62,7 @@ async def run(msg, pageName = None):
                 emd = imData["query"]["pages"]["-1"]["imageinfo"][0]["extmetadata"]
 
                 license = emd["UsageTerms"]["value"]
-                author = emd["DateTime"]["value"]
+                author = emd["DateTime"]["value"] #umm what, you egg
                 date = emd["DateTime"]["value"]
                 licenseUrl = emd["LicenseUrl"]["value"]
             except Exception as e:

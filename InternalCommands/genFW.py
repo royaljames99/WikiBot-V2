@@ -5,10 +5,17 @@ import discord
 session = requests.session()
 
 async def run(msg, sub, pageName = None):
-    if pageName == None:
-        req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0")
-    else:
-        req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&inprop=url&titles={pageName}")
+    requestCompleted = False
+    while not requestCompleted:
+        try:
+            if pageName == None:
+                req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0")
+            else:
+                req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&inprop=url&titles={pageName}")
+        except requests.exceptions.ConnectionError as ce:
+            print(ce)
+        except Exception as e:
+            print(e)
 
     try:
         data = req.json()
