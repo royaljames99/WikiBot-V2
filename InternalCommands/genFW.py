@@ -7,11 +7,13 @@ session = requests.session()
 async def run(msg, sub, pageName = None):
     requestCompleted = False
     while not requestCompleted:
+        print("pass")
         try:
             if pageName == None:
                 req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&generator=random&inprop=url&grnnamespace=0")
             else:
                 req = session.get(f"https://{sub}.fandom.com/api.php?action=query&format=json&prop=info|extracts|pageimages&inprop=url&titles={pageName}")
+            requestCompleted = True
         except requests.exceptions.ConnectionError as ce:
             print(ce)
         except Exception as e:
@@ -89,11 +91,11 @@ async def run(msg, sub, pageName = None):
                 else:
                     print("Fandom page image error: no accepted url")
 
-    except:
+    except Exception as e:
         print(f"WE GOT A FANDOM WIKI ERROR\npageName: {pageName}\nerror: {e}")
         if pageName != None:
             embed = discord.Embed(title = f"Error generating wikipage with name: {pageName}", description = "Whoopsy, try checking your page name, for some reason it is case-sensitive")
         else:
-            embed = discord.Embed(title = "Error in generating wiki", description = "whoopsy, let me know about this")
+            embed = discord.Embed(title = "Error in generating wiki", description = "Whoopsy, let me know about this")
         
         await msg.edit(embed = embed)
