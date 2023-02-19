@@ -8,12 +8,12 @@ async def run(bot):
         data = json.load(file)
 
     addon = await asyncio.create_task(timestamp.getTimeAddonNow())
-
+    
     for serverId in data:
         for channelId in data[serverId]["CHANNELS"]:
             for hour in data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"]:
                 for sub in data[serverId]["CHANNELS"][channelId]["SUBS_BY_HOUR"][hour]:
-                    if sub["TIME"] % 86400 == addon:
+                    if (sub["TIME"] % 86400) - 3600 == addon:
                         #get channel
                         channel =  bot.get_channel(int(channelId))
                         #send sub
